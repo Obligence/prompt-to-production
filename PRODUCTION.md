@@ -133,6 +133,10 @@ Push first. Zapier fetches files from `https://raw.githubusercontent.com/Obligen
    YouTube Studio tick "altered or synthetic content" only if YouTube asks (an AI voice on slides is usually not
    required to be labeled; the channel description says the narration is AI-generated).
 
+Prompt to Production Zapier connection_id: `026869c0-e06a-8fae-9c6b-5e4ee71f8931` (title "YouTube #2", channel id
+UCMSsb_KkwBugsVx6vPHTn6Q, verified 2026-11-23). Still run the customUrl check before every upload. The default
+connection is Planck to Parsec: never use it here, and never change the default.
+
 Course playlist ID: (not created yet)
 
 Description template:
