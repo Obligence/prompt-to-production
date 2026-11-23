@@ -22,8 +22,11 @@ that actually works, and builds toward shipping production AI apps.
 6. **Approval 2, the preview.** Send Reza the MP4, the cover and the SRT, plus the title, description (with
    chapters), tags, and the facts or API details you verified with their sources. Say plainly that nobody listened
    to the audio. Ask him to reply "approve" or to say what to change. Stop and wait. Rebuild and re-send after changes.
-7. Only after an explicit "approve" given after he received the preview: commit, push, upload (section 6),
-   then update `curriculum.md` and `log.md`, push again, and send Reza the link plus any manual to-dos.
+7. Only after an explicit "approve" given after he received the preview: commit and push at once, then publish
+   at **5:30 PM Toronto time** that day (Reza's chosen daily release time): schedule a wake-up in the session for
+   17:30 America/Toronto and upload then (section 6). If approval arrives at 5:25 PM or later, publish right away and
+   say it went out late. Then update `curriculum.md` and `log.md`, push again, and send Reza the link plus any
+   manual to-dos. The daily run starts at 12:53 PM so there is time for both approvals before 5:30 PM.
 
 If Reza does not reply, do nothing further. Never upload without approval 2.
 
