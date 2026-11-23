@@ -1,0 +1,308 @@
+1
+00:00:00,500 --> 00:00:02,036
+Welcome to Prompt to Production.
+
+2
+00:00:02,316 --> 00:00:07,543
+This is lesson eleven of the free course, How to Become an AI Application Engineer.
+
+3
+00:00:07,823 --> 00:00:11,983
+Today, you'll write your first program that talks to a large language model.
+
+4
+00:00:12,263 --> 00:00:14,716
+And by the end, you'll understand every line of it.
+
+5
+00:00:16,116 --> 00:00:18,932
+Here's what you'll be able to do by the end of this lesson.
+
+6
+00:00:19,382 --> 00:00:23,265
+Call an LLM from Python, with your API key stored safely.
+
+7
+00:00:23,715 --> 00:00:26,083
+Understand each part of the request you send.
+
+8
+00:00:26,533 --> 00:00:29,626
+Read the response, including the tokens you just paid for.
+
+9
+00:00:30,076 --> 00:00:33,703
+And work out what each call costs, so you never get a surprise bill.
+
+10
+00:00:35,103 --> 00:00:37,791
+Before we write code, let's see what actually happens.
+
+11
+00:00:38,071 --> 00:00:42,508
+Your code uses the provider's SDK, which is just a small library.
+
+12
+00:00:42,958 --> 00:00:46,051
+The SDK sends a request over HTTPS.
+
+13
+00:00:46,331 --> 00:00:53,457
+Inside it: which model to use, a system prompt, the conversation messages, and a limit on how long the answer can be.
+
+14
+00:00:53,907 --> 00:00:56,403
+The provider runs the model on its own servers.
+
+15
+00:00:56,683 --> 00:00:58,112
+You never download the model.
+
+16
+00:00:58,562 --> 00:01:04,941
+And you get a response back, with the generated text, the reason the model stopped, and how many tokens were used.
+
+17
+00:01:05,221 --> 00:01:05,903
+That's it.
+
+18
+00:01:06,183 --> 00:01:08,701
+The SDK only builds this request for you.
+
+19
+00:01:08,981 --> 00:01:10,474
+There's no magic in between.
+
+20
+00:01:11,874 --> 00:01:13,175
+Let's set up the project.
+
+21
+00:01:13,455 --> 00:01:16,335
+I'm using uv, a fast Python package manager.
+
+22
+00:01:16,615 --> 00:01:19,751
+Create a new project, and add the Anthropic SDK.
+
+23
+00:01:20,201 --> 00:01:23,017
+Then put your API key in an environment variable.
+
+24
+00:01:23,297 --> 00:01:24,897
+Never paste a key into your code.
+
+25
+00:01:25,177 --> 00:01:30,297
+Code gets committed, pushed and shared, and leaked keys are found and abused within minutes.
+
+26
+00:01:31,697 --> 00:01:32,935
+Here's the whole program.
+
+27
+00:01:33,215 --> 00:01:34,473
+First, create a client.
+
+28
+00:01:34,753 --> 00:01:37,591
+It picks up your key from the environment automatically.
+
+29
+00:01:38,041 --> 00:01:39,811
+Then call messages dot create.
+
+30
+00:01:40,091 --> 00:01:44,294
+You choose a model, and max tokens, which caps how long the answer can be.
+
+31
+00:01:44,574 --> 00:01:46,537
+That also caps what you pay for the answer.
+
+32
+00:01:46,987 --> 00:01:51,211
+The system prompt sets the model's role and rules for the whole conversation.
+
+33
+00:01:51,491 --> 00:01:54,008
+The messages list is the conversation itself.
+
+34
+00:01:54,288 --> 00:01:56,272
+Right now, it's a single user message.
+
+35
+00:01:56,722 --> 00:01:59,389
+Finally, print the text of the first content block.
+
+36
+00:01:59,669 --> 00:02:00,629
+That's the answer.
+
+37
+00:02:02,029 --> 00:02:02,818
+Now run it.
+
+38
+00:02:03,098 --> 00:02:05,061
+In a second or two, the answer comes back.
+
+39
+00:02:05,511 --> 00:02:08,113
+Run it again, and you'll probably get a different answer.
+
+40
+00:02:08,393 --> 00:02:09,204
+That's normal.
+
+41
+00:02:09,484 --> 00:02:13,303
+The model samples its words, so the output varies from call to call.
+
+42
+00:02:13,583 --> 00:02:15,247
+Your code has to be ready for that.
+
+43
+00:02:16,647 --> 00:02:18,119
+Don't just grab the text, though.
+
+44
+00:02:18,399 --> 00:02:19,999
+The response tells you much more.
+
+45
+00:02:20,449 --> 00:02:22,795
+Stop reason tells you why the model stopped.
+
+46
+00:02:23,075 --> 00:02:24,377
+End turn means it finished.
+
+47
+00:02:24,657 --> 00:02:27,985
+Max tokens means it hit your limit, and the answer was cut off.
+
+48
+00:02:28,265 --> 00:02:29,438
+Always check this one.
+
+49
+00:02:29,888 --> 00:02:32,619
+And usage gives you the input and output tokens.
+
+50
+00:02:32,899 --> 00:02:36,504
+Tokens are pieces of words, and they're exactly what you're billed for.
+
+51
+00:02:36,784 --> 00:02:40,304
+Professional AI engineers log these numbers from day one.
+
+52
+00:02:41,704 --> 00:02:43,432
+So let's turn tokens into money.
+
+53
+00:02:43,712 --> 00:02:49,685
+Providers charge per million tokens, and output tokens usually cost more than input tokens.
+
+54
+00:02:49,965 --> 00:02:54,211
+Prices change, so copy the current ones from your provider's pricing page.
+
+55
+00:02:54,661 --> 00:02:56,346
+Then a tiny function does the math.
+
+56
+00:02:56,626 --> 00:03:00,743
+Multiply each token count by its price, and divide by a million.
+
+57
+00:03:01,193 --> 00:03:04,436
+A single call like ours costs a tiny fraction of a cent.
+
+58
+00:03:04,716 --> 00:03:10,369
+But an app with thousands of users makes millions of calls, so this function will matter a lot later.
+
+59
+00:03:11,769 --> 00:03:14,628
+One last thing, and it surprises almost everyone.
+
+60
+00:03:14,908 --> 00:03:16,209
+The model has no memory.
+
+61
+00:03:16,489 --> 00:03:18,644
+Every API call starts from zero.
+
+62
+00:03:19,094 --> 00:03:20,459
+Tell it your name in one call.
+
+63
+00:03:20,739 --> 00:03:22,937
+Then, in the next call, ask what your name is.
+
+64
+00:03:23,217 --> 00:03:27,163
+It has no idea, because the second request never contained your name.
+
+65
+00:03:27,613 --> 00:03:29,256
+So how do chatbots remember?
+
+66
+00:03:29,536 --> 00:03:31,904
+That's exactly what we'll build in the next lesson.
+
+67
+00:03:33,304 --> 00:03:35,864
+Before you go, four beginner mistakes to avoid.
+
+68
+00:03:36,314 --> 00:03:38,682
+Hardcoding your API key in the source code.
+
+69
+00:03:39,132 --> 00:03:42,375
+Ignoring the stop reason, and shipping answers that were cut off.
+
+70
+00:03:42,825 --> 00:03:46,131
+Not tracking tokens, and finding out about cost from your bill.
+
+71
+00:03:46,581 --> 00:03:48,885
+And assuming the model remembers earlier calls.
+
+72
+00:03:49,165 --> 00:03:49,869
+It doesn't.
+
+73
+00:03:51,269 --> 00:03:59,291
+Your homework: make your first call, print the tokens and the cost of every call, and try three different system prompts to see how they change the answer.
+
+74
+00:03:59,571 --> 00:04:02,173
+The full code is in the GitHub repo linked below.
+
+75
+00:04:02,623 --> 00:04:06,634
+In the next lesson, we'll give the model a memory, and build a real chatbot.
+
+76
+00:04:06,914 --> 00:04:08,365
+Subscribe so you don't miss it.
+
+77
+00:04:08,645 --> 00:04:09,391
+See you there.
+

@@ -1,0 +1,11 @@
+0:00 Intro
+0:15 What you'll learn
+0:34 How an LLM call works
+1:11 Project setup
+1:31 Your first call
+2:01 Running the app
+2:16 Reading the response
+2:41 Calculating cost
+3:11 Why the model forgets
+3:32 Mistakes to avoid
+3:50 Homework
