@@ -1,0 +1,372 @@
+1
+00:00:00,500 --> 00:00:03,913
+Your support assistant just said a pending refund was approved.
+
+2
+00:00:04,193 --> 00:00:10,487
+Today we'll fix the workflow in Python and see what that tells us about being an AI application engineer.
+
+3
+00:00:11,887 --> 00:00:13,423
+Welcome to Prompt to Production.
+
+4
+00:00:13,703 --> 00:00:17,265
+This is lesson one of How to Become an AI Application Engineer.
+
+5
+00:00:17,545 --> 00:00:21,172
+We'll look at one small support assistant through three different lenses.
+
+6
+00:00:21,622 --> 00:00:26,977
+First, you can explain how improving a model differs from building the application that uses it.
+
+7
+00:00:27,257 --> 00:00:31,779
+We'll also talk about where AI assisted prototyping fits into that work.
+
+8
+00:00:32,229 --> 00:00:36,560
+Second, you'll trace a support ticket through a model draft and an application rule.
+
+9
+00:00:36,840 --> 00:00:38,696
+The rule answers a practical question.
+
+10
+00:00:38,976 --> 00:00:40,427
+Where should this draft go next?
+
+11
+00:00:40,877 --> 00:00:43,053
+Finally, you'll run the same failure twice.
+
+12
+00:00:43,333 --> 00:00:45,957
+First in a prototype, then with a rule and a test.
+
+13
+00:00:46,237 --> 00:00:50,887
+You can follow along with plain Python and the example in the course repository.
+
+14
+00:00:52,287 --> 00:00:53,290
+Start with ownership.
+
+15
+00:00:53,570 --> 00:00:56,727
+Suppose the support team wants fewer repetitive replies.
+
+16
+00:00:57,007 --> 00:00:59,375
+We can use a model to draft those replies.
+
+17
+00:00:59,655 --> 00:01:06,503
+We still have to decide which tickets it touches, where drafts appear, and what happens when it gives us an unusable answer.
+
+18
+00:01:06,953 --> 00:01:11,177
+Those choices are the AI application engineer's work in this example.
+
+19
+00:01:11,457 --> 00:01:15,767
+The ML engineer might improve a model that classifies support tickets.
+
+20
+00:01:16,047 --> 00:01:24,153
+They might curate labeled training data, evaluate a new model on tickets it hasn't seen, and monitor how it performs after deployment.
+
+21
+00:01:24,603 --> 00:01:30,641
+Vibe coding is a way to explore an idea by describing what you want and trying generated code.
+
+22
+00:01:30,921 --> 00:01:34,099
+It can get a prototype in front of the support team quickly.
+
+23
+00:01:34,379 --> 00:01:37,131
+On a small team, one person may do all of this.
+
+24
+00:01:37,411 --> 00:01:41,913
+The distinction to remember is the outcome each piece of work is trying to improve.
+
+25
+00:01:43,313 --> 00:01:44,635
+Let's follow one ticket.
+
+26
+00:01:44,915 --> 00:01:48,137
+A support worker has already tagged it as shipping or refund.
+
+27
+00:01:48,417 --> 00:01:50,401
+That category comes from the application.
+
+28
+00:01:50,681 --> 00:01:52,430
+We treat it as an input to the rule.
+
+29
+00:01:52,880 --> 00:01:54,480
+A model can help with the wording.
+
+30
+00:01:54,760 --> 00:01:58,664
+For example, a shipping draft might ask the customer for an order number.
+
+31
+00:01:58,944 --> 00:02:05,088
+A refund case can sound just as polished even when the model has no evidence the refund was approved.
+
+32
+00:02:05,538 --> 00:02:09,421
+The Python rule decides which output can be shown to staff as a draft.
+
+33
+00:02:09,701 --> 00:02:12,431
+Here we only want drafts for routine shipping tickets.
+
+34
+00:02:12,711 --> 00:02:15,869
+For other cases the application requests human review.
+
+35
+00:02:16,319 --> 00:02:18,793
+Staff make the final decision about what to send.
+
+36
+00:02:19,073 --> 00:02:21,484
+That gives the prototype a practical boundary.
+
+37
+00:02:21,764 --> 00:02:25,348
+We can test the routing rule by passing in a category and a draft.
+
+38
+00:02:25,628 --> 00:02:28,252
+The quality of a draft is a separate evaluation.
+
+39
+00:02:29,652 --> 00:02:31,700
+The function at the top is our model stub.
+
+40
+00:02:31,980 --> 00:02:36,908
+A stub is a small substitute that always gives us the same answer for the same input.
+
+41
+00:02:37,188 --> 00:02:42,201
+That makes the example reproducible and lets you run it with the Python standard library.
+
+42
+00:02:42,481 --> 00:02:45,788
+The course makes its first live model call in lesson eleven.
+
+43
+00:02:46,238 --> 00:02:47,582
+Look at the last two lines.
+
+44
+00:02:47,862 --> 00:02:50,251
+The prototype returns whatever the stub wrote.
+
+45
+00:02:50,531 --> 00:02:53,539
+That gives us a quick way to see what a draft might look like.
+
+46
+00:02:53,819 --> 00:02:58,193
+We can also see exactly where the application has to decide how to handle it.
+
+47
+00:02:59,593 --> 00:03:01,875
+Run the application with the prototype flag.
+
+48
+00:03:02,155 --> 00:03:05,377
+For this transcript we use the refund example on purpose.
+
+49
+00:03:05,657 --> 00:03:09,411
+The command prints locally so we can inspect the draft in the terminal.
+
+50
+00:03:09,861 --> 00:03:10,779
+There's the failure.
+
+51
+00:03:11,059 --> 00:03:15,240
+The draft says the refund was approved even though this is a pending request.
+
+52
+00:03:15,520 --> 00:03:17,376
+The stub makes that failure repeatable.
+
+53
+00:03:17,656 --> 00:03:23,096
+In an application, fluent text like this can make an unverified claim look ready to act on.
+
+54
+00:03:23,376 --> 00:03:27,259
+We want the application to route this case to staff and leave the draft out.
+
+55
+00:03:28,659 --> 00:03:29,853
+Start with the category.
+
+56
+00:03:30,133 --> 00:03:34,805
+Shipping is the only category we've decided to support with drafts in this demo.
+
+57
+00:03:35,085 --> 00:03:36,920
+Anything else goes to human review.
+
+58
+00:03:37,200 --> 00:03:40,293
+That includes a category our prototype has never seen.
+
+59
+00:03:40,573 --> 00:03:45,501
+The empty string means the staff review item carries none of the generated wording.
+
+60
+00:03:45,951 --> 00:03:47,381
+Then check the draft itself.
+
+61
+00:03:47,661 --> 00:03:52,503
+A missing value or a string made of spaces would give staff nothing useful to review.
+
+62
+00:03:52,783 --> 00:03:56,858
+The type check also lets us check the text safely before trying to trim it.
+
+63
+00:03:57,138 --> 00:03:59,058
+These checks cover the shape of the result.
+
+64
+00:03:59,508 --> 00:04:01,748
+Finally, return the trimmed draft for staff.
+
+65
+00:04:02,028 --> 00:04:06,017
+Someone still needs to check the actual order and decide what to send.
+
+66
+00:04:06,297 --> 00:04:09,753
+Let's run the same ticket through this version and see what changes.
+
+67
+00:04:11,153 --> 00:04:12,967
+The shipping ticket produces a draft.
+
+68
+00:04:13,247 --> 00:04:16,959
+The refund ticket still gets that misleading suggestion from the stub.
+
+69
+00:04:17,239 --> 00:04:20,887
+Now it goes to human review with the generated text withheld.
+
+70
+00:04:21,167 --> 00:04:23,919
+The unknown category follows the same review path.
+
+71
+00:04:24,369 --> 00:04:27,270
+Run the tests and you'll see the cases listed by name.
+
+72
+00:04:27,550 --> 00:04:29,897
+The refund test checks both parts of the result.
+
+73
+00:04:30,177 --> 00:04:35,531
+It expects the human review destination and an empty string where a draft would otherwise go.
+
+74
+00:04:35,981 --> 00:04:37,283
+All five tests pass.
+
+75
+00:04:37,563 --> 00:04:40,101
+We've checked the application rule with fixed inputs.
+
+76
+00:04:40,381 --> 00:04:48,701
+To judge a real model, we would use a separate set of examples and ask whether each draft matches the order facts and the team's reply guidelines.
+
+77
+00:04:48,981 --> 00:04:51,797
+Those are different questions, and both are worth testing.
+
+78
+00:04:53,197 --> 00:04:56,419
+Here are three mistakes worth catching on your next prototype.
+
+79
+00:04:56,869 --> 00:04:59,450
+The first is testing just the smoothest example.
+
+80
+00:04:59,730 --> 00:05:02,333
+A routine shipping ticket can make the app look ready.
+
+81
+00:05:02,613 --> 00:05:07,370
+Try a refund, a new category, and a blank result before you draw that conclusion.
+
+82
+00:05:07,820 --> 00:05:11,404
+The second is using a model suggestion as if it were approval.
+
+83
+00:05:11,684 --> 00:05:13,156
+A sentence can sound official.
+
+84
+00:05:13,436 --> 00:05:17,852
+Use staff or application records to determine whether an action was approved.
+
+85
+00:05:18,302 --> 00:05:21,139
+The third is asking one test to answer two questions.
+
+86
+00:05:21,419 --> 00:05:23,787
+Test the routing rule with inputs you control.
+
+87
+00:05:24,067 --> 00:05:28,803
+Measure draft quality on a set of representative tickets that includes hard cases.
+
+88
+00:05:30,203 --> 00:05:32,251
+Your homework is to run both versions.
+
+89
+00:05:32,531 --> 00:05:35,795
+Then add a test for a blank category with a nonempty draft.
+
+90
+00:05:36,075 --> 00:05:39,894
+Decide what result you expect first, and check that the test agrees.
+
+91
+00:05:40,174 --> 00:05:44,142
+The example and the run commands are in the repository linked below.
+
+92
+00:05:44,592 --> 00:05:50,565
+In lesson two we'll draw the modern AI application stack and find where this routing rule belongs.
+
+93
+00:05:50,845 --> 00:05:53,811
+If you're following the course in order, that's your next lesson.
+
